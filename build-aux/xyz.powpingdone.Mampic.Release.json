@@ -33,7 +33,7 @@
             "buildsystem" : "meson",
             "run-tests" : true,
             "config-opts" : [
-                "-Dprofile=development"
+                "-Dprofile=default"
             ],
             "sources" : [
                 {

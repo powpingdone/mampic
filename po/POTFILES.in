@@ -1,6 +1,6 @@
 data/xyz.powpingdone.Mampic.desktop.in.in
 data/xyz.powpingdone.Mampic.gschema.xml.in
 data/xyz.powpingdone.Mampic.metainfo.xml.in.in
-data/resources/ui/shortcuts.ui
-data/resources/ui/window.ui
+data/resources/ui/shortcuts.blp
+data/resources/ui/window.blp
 src/application.rs

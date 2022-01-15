@@ -9,4 +9,12 @@ log = "0.4"
 pretty_env_logger = "0.4"
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 once_cell = "1.5"
-gtk = {version = "0.2", package = "gtk4"}
+
+[dependencies.gtk]
+package = "gtk4"
+version = "0.4"
+features = [ "v4_6" ]
+
+[dependencies.adw]
+package = "libadwaita"
+version = "0.1"
