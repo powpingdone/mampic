@@ -23,6 +23,10 @@ rust_sources = files(
   'config.rs',
   'main.rs',
   'window.rs',
+
+  'startup/mod.rs',
+  'startup/startup_glib.rs',
+  'startup/server_choice_glib.rs',
 )
 
 sources = [rust_sources, cargo_sources]

@@ -2,6 +2,7 @@ target/
 build/
 _build/
 builddir/
+build-aux/*.json~
 build-aux/app
 build-aux/.flatpak-builder/
 src/config.rs

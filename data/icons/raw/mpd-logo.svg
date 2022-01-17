@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256.0px"
+   height="256.0px"
+   viewBox="0 0 256.0 256.0"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="mpd-logo.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview829"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="2.7652076"
+     inkscape:cx="107.0444"
+     inkscape:cy="129.10423"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid892" />
+  </sodipodi:namedview>
+  <defs
+     id="defs824">
+    <rect
+       x="0"
+       y="0"
+       width="255"
+       height="140"
+       id="rect61076" />
+    <rect
+       x="30"
+       y="20"
+       width="50"
+       height="55"
+       id="rect48296" />
+    <rect
+       x="0"
+       y="0"
+       width="255"
+       height="155"
+       id="rect27574" />
+    <rect
+       x="60"
+       y="70"
+       width="165"
+       height="120"
+       id="rect5700" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       id="text5698"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:Cantarell;-inkscape-font-specification:'Cantarell, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect5700);fill:#000000;fill-opacity:1;stroke:none"
+       transform="translate(25.758126,70.164544)" />
+    <text
+       xml:space="preserve"
+       id="text27572"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:Cantarell;-inkscape-font-specification:'Cantarell, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect27574);fill:#9c9c9c;fill-opacity:1;stroke:none"
+       transform="translate(25.758126,70.164544)" />
+    <text
+       xml:space="preserve"
+       id="text48294"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:Cantarell;-inkscape-font-specification:'Cantarell, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect48296);fill:#000000;fill-opacity:1;stroke:none"
+       transform="translate(25.758126,70.164544)"><tspan
+         x="30"
+         y="161.20921"
+         id="tspan77303"><tspan
+           dx="0 82.463928 72.959839"
+           id="tspan77301">MOD</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       id="text61074"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:Cantarell;-inkscape-font-specification:'Cantarell, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect61076);fill:#9c9c9c;fill-opacity:1;stroke:none;stroke-width:1.00157;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="translate(22.49612,75.102795)"><tspan
+         x="0"
+         y="86.209205"
+         id="tspan77305">MPD</tspan></text>
+  </g>
+</svg>

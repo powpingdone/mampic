@@ -16,5 +16,20 @@
       <summary>Default window maximized behaviour</summary>
       <description></description>
     </key>
+    <key name="server-width" type="i">
+      <default>600</default>
+      <summary>Default window width</summary>
+      <description>Default window width</description>
+    </key>
+    <key name="server-height" type="i">
+      <default>400</default>
+      <summary>Default window height</summary>
+      <description>Default window height</description>
+    </key>
+    <key name="server-maximized" type="b">
+      <default>false</default>
+      <summary>Default window maximized behaviour</summary>
+      <description></description>
+    </key>
   </schema>
 </schemalist>

@@ -8,6 +8,7 @@ use gtk::subclass::prelude::*;
 use gtk::{gdk, gio, glib};
 
 use crate::config::{APP_ID, PKGDATADIR, PROFILE, VERSION};
+use crate::startup::SelectServerWindow;
 use crate::window::ExampleApplicationWindow;
 
 mod imp {
@@ -18,6 +19,7 @@ mod imp {
     #[derive(Debug, Default)]
     pub struct ExampleApplication {
         pub window: OnceCell<WeakRef<ExampleApplicationWindow>>,
+        pub startup_window: OnceCell<WeakRef<SelectServerWindow>>,
     }
 
     #[glib::object_subclass]
@@ -40,12 +42,16 @@ mod imp {
                 return;
             }
 
-            let window = ExampleApplicationWindow::new(app);
             self.window
-                .set(window.downgrade())
+                .set(ExampleApplicationWindow::new(app).downgrade())
                 .expect("Window already set.");
 
-            app.main_window().present();
+            self.startup_window
+                .set(SelectServerWindow::new(app).downgrade())
+                .expect("Server window already set.");
+
+            app.server_window().present();
+            app.server_window().append();
         }
 
         fn startup(&self, app: &Self::Type) {
@@ -86,11 +92,17 @@ impl ExampleApplication {
         imp.window.get().unwrap().upgrade().unwrap()
     }
 
+    fn server_window(&self) -> SelectServerWindow {
+        let imp = imp::ExampleApplication::from_instance(self);
+        imp.startup_window.get().unwrap().upgrade().unwrap()
+    }
+
     fn setup_gactions(&self) {
         // Quit
         let action_quit = gio::SimpleAction::new("quit", None);
         action_quit.connect_activate(clone!(@weak self as app => move |_, _| {
             // This is needed to trigger the delete event and saving the window state
+            app.server_window().close();
             app.main_window().close();
             app.quit();
         }));

@@ -1,0 +1,38 @@
+using Gtk 4.0;
+using Adw 1;
+
+template SelectServerWindow : Adw.ApplicationWindow {
+    Box {
+        orientation: vertical;
+
+        Adw.HeaderBar {
+            title-widget: Adw.WindowTitle {
+                title: C_("select server", "Select Server to Play");
+            };
+
+            Button {
+                styles ["raised"]
+
+                icon-name: "list-add-symbolic";
+            }
+        }
+
+        Adw.Bin {
+            visible: true;
+            child: Adw.Clamp {
+                child: Box viewport {
+                    orientation: vertical;
+                };
+            };
+        }
+
+        Adw.StatusPage no_servers {
+            visible: false;
+            icon-name: "no-servers";
+            title: C_("no servers", "No Servers Found");
+            description: C_("no servers",
+            "In order to use this player, you must add either a Subsonic, Ampache, or Music Player Daemon (MPD) server.");
+        }
+    }
+}
+

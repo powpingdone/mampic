@@ -1,0 +1,58 @@
+using Gtk 4.0;
+using Adw 1;
+
+template ServerChoiceWidget : Adw.Bin {
+    styles ["tile", "card"]
+
+    child: CenterBox {
+        orientation: horizontal;
+        margin-top: 4;
+        margin-bottom: 4;
+        margin-start: 4;
+        margin-end: 4;
+
+        [start]
+        Box {
+            orientation: horizontal;
+
+            Image icon {
+                icon-name: "error-symbolic";
+            }
+
+            Box {
+                orientation: vertical;
+
+                Label server_name_label {
+                    styles ["heading"]
+
+                    label: bind ServerChoiceWidget.server-name sync-create;
+                }
+
+                Label server_type_label {
+                    label: bind ServerChoiceWidget.server-type sync-create;
+                }
+            }
+        }
+
+        [end]
+        Box {
+            styles ["linked"]
+
+            orientation: horizontal;
+            margin-top: 4;
+            margin-bottom: 4;
+            margin-start: 4;
+            margin-end: 4;
+
+            Button {
+                icon-name: "view-more-symbolic";
+            }
+
+            Button {
+                icon-name: "play-symbolic";
+            }
+        }
+    };
+
+    height-request: 50;
+}
