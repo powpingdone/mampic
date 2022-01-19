@@ -6,11 +6,6 @@ use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
 
-pub const NO_SERVER: u32 = 0;
-pub const MPD: u32 = 1;
-pub const SUBSONIC: u32 = 2;
-pub const AMPACHE: u32 = 3;
-
 glib::wrapper! {
     pub struct SelectServerWindow(ObjectSubclass<startup_glib::SelectServerWindow>)
         @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
@@ -24,7 +19,11 @@ impl SelectServerWindow {
 
     pub fn append(&self) {
         let i_am_me = startup_glib::SelectServerWindow::from_instance(self);
-        let godly = ServerChoiceWidget::new(&"Lorium Ipsum".to_string(), &MPD);
+        let godly = ServerChoiceWidget::new(
+            &"Lorium Ipsum".to_string(),
+            &"no-server".to_string(),
+            &"No Server".to_string(),
+        );
         i_am_me.viewport.append(&godly);
         godly.update_icon();
     }
@@ -66,20 +65,24 @@ glib::wrapper! {
 }
 
 impl ServerChoiceWidget {
-    pub fn new(server_name: &String, server_type: &u32) -> Self {
-        glib::Object::new(&[("server-name", server_name), ("server-type", server_type)])
-            .expect("failed to create a ServerChoiceWidget")
+    pub fn new(server_name: &String, server_type: &String, display: &String) -> Self {
+        glib::Object::new(&[
+            ("server-name", server_name),
+            ("server-type", server_type),
+            ("server-type-display", display),
+        ])
+        .expect("failed to create a ServerChoiceWidget")
     }
 
     pub fn update_icon(&self) {
         let true_self = server_choice_glib::ServerChoiceWidget::from_instance(self);
         true_self
             .icon
-            .set_icon_name(match true_self.server_type.get() {
-                MPD => Some("mpd-logo"),
-                SUBSONIC => Some("subsonic-logo"),
-                AMPACHE => Some("ampache-logo"),
-                NO_SERVER | _ => Some("error-symbolic"),
+            .set_icon_name(match true_self.server_type.borrow().as_ref() {
+                "mpd" => Some("mpd-logo"),
+                "subsonic" => Some("subsonic-logo"),
+                "ampache" => Some("ampache-logo"),
+                _ => Some("error-symbolic"),
             });
     }
 }

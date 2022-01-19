@@ -10,12 +10,6 @@ use gtk::{gio, glib};
 use self::application::ExampleApplication;
 use self::config::{GETTEXT_PACKAGE, LOCALEDIR, RESOURCES_FILE};
 
-//BIG todo LIST
-//TODO: Make icons for subsonic, ampache, mpd (text doesnt work!!!)
-//TODO: Make ServerChoiceWidget.server-type an enum
-//TODO: Make server properties window
-// for now at least
-
 fn main() {
     // Initialize logger
     pretty_env_logger::init();

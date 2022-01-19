@@ -1,13 +1,11 @@
 use crate::startup::ServerChoiceWidget as BaseT;
-#[allow(unused_imports)]
-use crate::startup::{AMPACHE, MPD, NO_SERVER, SUBSONIC};
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::glib;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use once_cell::sync::Lazy;
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 
 #[derive(Default, gtk::CompositeTemplate)]
 #[template(resource = "/xyz/powpingdone/Mampic/ui/server-choice.ui")]
@@ -20,7 +18,8 @@ pub struct ServerChoiceWidget {
     pub icon: TemplateChild<gtk::Image>,
 
     pub server_name: RefCell<String>,
-    pub server_type: Cell<u32>,
+    pub server_type: RefCell<String>,
+    pub server_type_display: RefCell<String>,
 }
 
 #[glib::object_subclass]
@@ -49,13 +48,18 @@ impl ObjectImpl for ServerChoiceWidget {
                     Some(&gettext("No name")),
                     glib::ParamFlags::READWRITE,
                 ),
-                glib::ParamSpecUInt::new(
+                glib::ParamSpecString::new(
                     "server-type",
                     "server-type",
                     "type of server",
-                    NO_SERVER,
-                    AMPACHE,
-                    NO_SERVER,
+                    Some(&"no-server"),
+                    glib::ParamFlags::READWRITE,
+                ),
+                glib::ParamSpecString::new(
+                    "server-type-display",
+                    "server-type-display",
+                    "type of server displayed",
+                    Some(&"No Server"),
                     glib::ParamFlags::READWRITE,
                 ),
             ]
@@ -65,7 +69,7 @@ impl ObjectImpl for ServerChoiceWidget {
 
     fn set_property(
         &self,
-        _obj: &Self::Type,
+        obj: &Self::Type,
         _id: usize,
         value: &glib::Value,
         pspec: &glib::ParamSpec,
@@ -76,8 +80,30 @@ impl ObjectImpl for ServerChoiceWidget {
                 *(self.server_name.borrow_mut()) = inp;
             }
             "server-type" => {
-                self.server_type
-                    .set(value.get().expect("value should be of type u32"));
+                let inp: String = value.get().expect("value should be of type String");
+                *(self.server_type.borrow_mut()) = inp.clone();
+
+                // update display name too
+                obj.set_property(
+                    "server-type-display",
+                    inp.chars().fold("".to_string(), |accum, x| {
+                        if accum == "" {
+                            accum + &x.to_uppercase().to_string()
+                        } else if x == '-' {
+                            accum + " "
+                        } else {
+                            accum + &x.to_string()
+                        }
+                    }),
+                );
+
+                if obj.is_realized() {
+                    obj.update_icon();
+                }
+            }
+            "server-type-display" => {
+                *(self.server_type_display.borrow_mut()) =
+                    value.get().expect("value should be string");
             }
             _ => unimplemented!(),
         }
@@ -86,11 +112,19 @@ impl ObjectImpl for ServerChoiceWidget {
     fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
         match pspec.name() {
             "server-name" => self.server_name.borrow().to_value(),
-            "server-type" => self.server_type.get().to_value(),
+            "server-type" => self.server_type.borrow().to_value(),
+            "server-type-display" => self.server_type_display.borrow().to_value(),
             _ => unimplemented!(),
         }
     }
 }
 
-impl WidgetImpl for ServerChoiceWidget {}
+impl WidgetImpl for ServerChoiceWidget {
+    fn realize(&self, widget: &Self::Type) {
+        self.parent_realize(widget);
+
+        widget.update_icon();
+    }
+}
+
 impl BinImpl for ServerChoiceWidget {}
