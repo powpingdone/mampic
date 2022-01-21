@@ -17,17 +17,6 @@ impl SelectServerWindow {
         glib::Object::new(&[("application", app)]).expect("Failed to create SelectServerWindow")
     }
 
-    pub fn append(&self) {
-        let i_am_me = startup_glib::SelectServerWindow::from_instance(self);
-        let godly = ServerChoiceWidget::new(
-            &"Lorium Ipsum".to_string(),
-            &"no-server".to_string(),
-            &"No Server".to_string(),
-        );
-        i_am_me.viewport.append(&godly);
-        godly.update_icon();
-    }
-
     fn save_window_size(&self) -> Result<(), glib::BoolError> {
         let self_ = startup_glib::SelectServerWindow::from_instance(self);
 

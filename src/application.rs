@@ -8,8 +8,8 @@ use gtk::subclass::prelude::*;
 use gtk::{gdk, gio, glib};
 
 use crate::config::{APP_ID, PKGDATADIR, PROFILE, VERSION};
+use crate::main_win::MainWindow;
 use crate::startup::SelectServerWindow;
-use crate::window::ExampleApplicationWindow;
 
 mod imp {
     use super::*;
@@ -18,7 +18,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct ExampleApplication {
-        pub window: OnceCell<WeakRef<ExampleApplicationWindow>>,
+        pub window: OnceCell<WeakRef<MainWindow>>,
         pub startup_window: OnceCell<WeakRef<SelectServerWindow>>,
     }
 
@@ -43,7 +43,7 @@ mod imp {
             }
 
             self.window
-                .set(ExampleApplicationWindow::new(app).downgrade())
+                .set(MainWindow::new(app).downgrade())
                 .expect("Window already set.");
 
             self.startup_window
@@ -51,7 +51,6 @@ mod imp {
                 .expect("Server window already set.");
 
             app.server_window().present();
-            app.server_window().append();
         }
 
         fn startup(&self, app: &Self::Type) {
@@ -87,7 +86,7 @@ impl ExampleApplication {
         .expect("Application initialization failed...")
     }
 
-    fn main_window(&self) -> ExampleApplicationWindow {
+    fn main_window(&self) -> MainWindow {
         let imp = imp::ExampleApplication::from_instance(self);
         imp.window.get().unwrap().upgrade().unwrap()
     }
@@ -114,6 +113,15 @@ impl ExampleApplication {
             app.show_about_dialog();
         }));
         self.add_action(&action_about);
+
+        let action_switch = gio::SimpleAction::new("switch", Some(glib::VariantTy::STRING));
+        action_switch.connect_activate(clone!(@weak self as app => move |_, inp| {
+            let inp: String = inp.unwrap().get().expect("string needs to be passed to MainWindow");
+            app.server_window().close();
+            app.main_window().setup(inp);
+            app.main_window().present();
+        }));
+        self.add_action(&action_switch);
     }
 
     // Sets up keyboard shortcuts
