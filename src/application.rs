@@ -17,23 +17,23 @@ mod imp {
     use once_cell::sync::OnceCell;
 
     #[derive(Debug, Default)]
-    pub struct ExampleApplication {
+    pub struct MampicApplication {
         pub window: OnceCell<WeakRef<MainWindow>>,
         pub startup_window: OnceCell<WeakRef<SelectServerWindow>>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ExampleApplication {
-        const NAME: &'static str = "ExampleApplication";
-        type Type = super::ExampleApplication;
+    impl ObjectSubclass for MampicApplication {
+        const NAME: &'static str = "MampicApplication";
+        type Type = super::MampicApplication;
         type ParentType = adw::Application;
     }
 
-    impl ObjectImpl for ExampleApplication {}
+    impl ObjectImpl for MampicApplication {}
 
-    impl ApplicationImpl for ExampleApplication {
+    impl ApplicationImpl for MampicApplication {
         fn activate(&self, app: &Self::Type) {
-            debug!("GtkApplication<ExampleApplication>::activate");
+            debug!("GtkApplication<MampicApplication>::activate");
 
             if let Some(window) = self.window.get() {
                 let window = window.upgrade().unwrap();
@@ -54,7 +54,7 @@ mod imp {
         }
 
         fn startup(&self, app: &Self::Type) {
-            debug!("GtkApplication<ExampleApplication>::startup");
+            debug!("GtkApplication<MampicApplication>::startup");
             self.parent_startup(app);
 
             // Set icons for shell
@@ -66,17 +66,17 @@ mod imp {
         }
     }
 
-    impl GtkApplicationImpl for ExampleApplication {}
-    impl AdwApplicationImpl for ExampleApplication {}
+    impl GtkApplicationImpl for MampicApplication {}
+    impl AdwApplicationImpl for MampicApplication {}
 }
 
 glib::wrapper! {
-    pub struct ExampleApplication(ObjectSubclass<imp::ExampleApplication>)
+    pub struct MampicApplication(ObjectSubclass<imp::MampicApplication>)
         @extends gio::Application, gtk::Application, adw::Application,
         @implements gio::ActionMap, gio::ActionGroup;
 }
 
-impl ExampleApplication {
+impl MampicApplication {
     pub fn new() -> Self {
         glib::Object::new(&[
             ("application-id", &Some(APP_ID)),
@@ -87,12 +87,12 @@ impl ExampleApplication {
     }
 
     fn main_window(&self) -> MainWindow {
-        let imp = imp::ExampleApplication::from_instance(self);
+        let imp = imp::MampicApplication::from_instance(self);
         imp.window.get().unwrap().upgrade().unwrap()
     }
 
     fn server_window(&self) -> SelectServerWindow {
-        let imp = imp::ExampleApplication::from_instance(self);
+        let imp = imp::MampicApplication::from_instance(self);
         imp.startup_window.get().unwrap().upgrade().unwrap()
     }
 

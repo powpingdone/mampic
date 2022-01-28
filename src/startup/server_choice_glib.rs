@@ -1,3 +1,4 @@
+use crate::startup::type_to_name;
 use crate::startup::ServerChoiceWidget as BaseT;
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
@@ -20,6 +21,7 @@ pub struct ServerChoiceWidget {
     pub server_name: RefCell<String>,
     pub server_type: RefCell<String>,
     pub server_type_display: RefCell<String>,
+    pub raw_server_string: RefCell<String>,
 }
 
 #[glib::object_subclass]
@@ -62,6 +64,13 @@ impl ObjectImpl for ServerChoiceWidget {
                     Some(&"No Server"),
                     glib::ParamFlags::READWRITE,
                 ),
+                glib::ParamSpecString::new(
+                    "raw-server-string",
+                    "raw-server-string",
+                    "self reference to be passed to properties",
+                    Some(&""),
+                    glib::ParamFlags::READWRITE,
+                ),
             ]
         });
         &PROPERTIES
@@ -74,46 +83,46 @@ impl ObjectImpl for ServerChoiceWidget {
         value: &glib::Value,
         pspec: &glib::ParamSpec,
     ) {
+        macro_rules! s_p {
+            ( $var:expr, $val:expr ) => {
+                *($var.borrow_mut()) = $val.get().expect("expected string for property $var")
+            };
+        }
+
         match pspec.name() {
-            "server-name" => {
-                let inp: String = value.get().expect("value should be of type String");
-                *(self.server_name.borrow_mut()) = inp;
-            }
+            "server-name" => s_p!(self.server_name, value),
+            "server-type-display" => s_p!(self.server_type_display, value),
+            "raw-server-string" => s_p!(self.raw_server_string, value),
             "server-type" => {
-                let inp: String = value.get().expect("value should be of type String");
-                *(self.server_type.borrow_mut()) = inp.clone();
+                s_p!(self.server_type, value);
 
                 // update display name too
                 obj.set_property(
                     "server-type-display",
-                    inp.chars().fold("".to_string(), |accum, x| {
-                        if accum == "" {
-                            accum + &x.to_uppercase().to_string()
-                        } else if x == '-' {
-                            accum + " "
-                        } else {
-                            accum + &x.to_string()
-                        }
-                    }),
+                    type_to_name!(value.get::<String>().expect("value should be string")),
                 );
 
                 if obj.is_realized() {
                     obj.update_icon();
                 }
             }
-            "server-type-display" => {
-                *(self.server_type_display.borrow_mut()) =
-                    value.get().expect("value should be string");
-            }
+
             _ => unimplemented!(),
         }
     }
 
     fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        macro_rules! g_p {
+            ( $var:expr ) => {
+                $var.borrow().to_value()
+            };
+        }
+
         match pspec.name() {
-            "server-name" => self.server_name.borrow().to_value(),
-            "server-type" => self.server_type.borrow().to_value(),
-            "server-type-display" => self.server_type_display.borrow().to_value(),
+            "server-name" => g_p!(self.server_name),
+            "server-type" => g_p!(self.server_type),
+            "server-type-display" => g_p!(self.server_type_display),
+            "raw-server-string" => g_p!(self.raw_server_string),
             _ => unimplemented!(),
         }
     }

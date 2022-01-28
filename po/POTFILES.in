@@ -3,7 +3,8 @@ data/xyz.powpingdone.Mampic.gschema.xml.in
 data/xyz.powpingdone.Mampic.metainfo.xml.in.in
 data/resources/ui/shortcuts.blp
 data/resources/ui/window.blp
-data/resources/ui/server-choice.blp
+data/resources/ui/server-choice-widget.blp
+data/resources/ui/setup-server-window.blp
 data/resources/ui/startup-choose.blp
 src/application.rs
 src/startup/server_choice_glib.rs

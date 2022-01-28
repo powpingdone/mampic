@@ -1,0 +1,84 @@
+using Gtk 4.0;
+using Adw 1;
+
+template ServerProperties : Adw.PreferencesWindow {
+    width-request: 400;
+    height-request: 700;
+    server-name: bind server_name.text bidirectional sync-create;
+    server-url: bind server_url.text bidirectional sync-create;
+    username: bind username.text bidirectional sync-create;
+    password: bind password.text bidirectional sync-create;
+
+    Adw.PreferencesPage {
+        Adw.PreferencesGroup {
+            title: C_("server properties window",
+                      "Server Properties");
+            description: C_("server properties window",
+                            "The standard properties of the server");
+
+            Adw.ActionRow {
+                title: C_("server properties window", "Server Name");
+                subtitle: C_("server properties window", "Your name of the server");
+
+                [suffix]
+                Entry {
+                    buffer: EntryBuffer server_name {};
+                }
+            }
+
+            Adw.ActionRow {
+                title: C_("server properties window", "Server URL");
+                subtitle: C_("server properties window", "Where the server is");
+
+                [suffix]
+                Entry {
+                    buffer: EntryBuffer server_url {};
+                }
+            }
+
+            Adw.ActionRow {
+                title: C_("server properties window", "Server Type");
+                subtitle: C_("server properties window", "Type of server");
+
+                [suffix]
+                Box {
+                    styles ["linked"]
+
+                    orientation: horizontal;
+
+                    ToggleButton ampache {
+                        label: "Ampache";
+                    }
+
+                    ToggleButton subsonic {
+                        label: "Subsonic";
+                        group: ampache;
+                    }
+
+                    ToggleButton mpd {
+                        label: "MPD";
+                        group: subsonic;
+                    }
+                }
+            }
+
+            Adw.ActionRow {
+                title: C_("server properties window", "Username");
+                subtitle: C_("server properties window", "Login to the server");
+
+                [suffix]
+                Entry {
+                    buffer: EntryBuffer username {};
+                }
+            }
+
+            Adw.ActionRow {
+                title: C_("server properties window", "Password");
+                subtitle: C_("server properties window", "Password to the server");
+
+                [suffix]
+                PasswordEntry password {}
+            }
+        }
+    }
+}

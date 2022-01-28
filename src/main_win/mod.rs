@@ -1,6 +1,6 @@
 mod main_window_glib;
 
-use crate::application::ExampleApplication;
+use crate::application::MampicApplication;
 use adw::subclass::prelude::*;
 use gtk::prelude::*;
 use gtk::{gio, glib};
@@ -12,7 +12,7 @@ glib::wrapper! {
 }
 
 impl MainWindow {
-    pub fn new(app: &ExampleApplication) -> Self {
+    pub fn new(app: &MampicApplication) -> Self {
         glib::Object::new(&[("application", app)]).expect("Failed to create MainWindow")
     }
 

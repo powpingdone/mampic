@@ -1,10 +1,28 @@
 mod server_choice_glib;
+mod server_props_glib;
 mod startup_glib;
 
-use crate::application::ExampleApplication;
+use crate::application::MampicApplication;
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
+
+// generic capitalizer for server type display name
+macro_rules! type_to_name {
+    ( $name:expr ) => {
+        $name.chars().fold("".to_string(), |accum, x| {
+            if accum == "" {
+                accum + &x.to_uppercase().to_string()
+            } else if x == '-' {
+                accum + " "
+            } else {
+                accum + &x.to_string()
+            }
+        })
+    };
+}
+
+pub(crate) use type_to_name;
 
 glib::wrapper! {
     pub struct SelectServerWindow(ObjectSubclass<startup_glib::SelectServerWindow>)
@@ -13,7 +31,7 @@ glib::wrapper! {
 }
 
 impl SelectServerWindow {
-    pub fn new(app: &ExampleApplication) -> Self {
+    pub fn new(app: &MampicApplication) -> Self {
         glib::Object::new(&[("application", app)]).expect("Failed to create SelectServerWindow")
     }
 
@@ -67,11 +85,45 @@ impl ServerChoiceWidget {
         let true_self = server_choice_glib::ServerChoiceWidget::from_instance(self);
         true_self
             .icon
-            .set_icon_name(match true_self.server_type.borrow().as_ref() {
+            .set_icon_name(match true_self.server_type.borrow().as_str() {
                 "mpd" => Some("mpd-logo"),
                 "subsonic" => Some("subsonic-logo"),
                 "ampache" => Some("ampache-logo"),
                 _ => Some("error-symbolic"),
             });
+    }
+}
+
+glib::wrapper! {
+    pub struct ServerPropertyWindow(ObjectSubclass<server_props_glib::ServerPropertyWindow>)
+        @extends gtk::Widget, gtk::Window, adw::Window, adw::PreferencesWindow,
+        @implements gio::ActionMap, gio::ActionGroup;
+}
+
+impl ServerPropertyWindow {
+    pub fn new<W: glib::IsA<gtk::Window>>(app: &MampicApplication, window: &W) -> Self {
+        glib::Object::new(&[("application", app), ("transient-for", window)])
+            .expect("Failed to create ServerPropertyWindow")
+    }
+
+    pub fn update_buttons(&self) {
+        let true_self = server_props_glib::ServerPropertyWindow::from_instance(self);
+        match true_self.server_type.borrow().as_str() {
+            "mpd" => {
+                true_self.mpd.activate();
+            }
+            "subsonic" => {
+                true_self.subsonic.activate();
+            }
+            "ampache" => {
+                true_self.ampache.activate();
+            }
+            _ => {
+                log::warn!(
+                    "type cannot be represented: {}",
+                    true_self.server_type.borrow().as_str()
+                )
+            }
+        }
     }
 }
